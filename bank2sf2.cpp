@@ -298,7 +298,6 @@ int main(int argc, char ** argv) {
 		//Loop through drum page
 		if(i==1) fseek(fpProj,pageDrumOffs,SEEK_SET);
 		
-		int prgId = 0;
 		//Main loop
 		while(true) {
 			uint16_t objectID = read_u16_be(fpProj);
@@ -347,7 +346,7 @@ int main(int argc, char ** argv) {
 						//Add instrument
 						char strBuf[0x100];
 						snprintf(strBuf,0x100,"layer%04X",layerID);
-						std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,prgId,i?128:0,zones);
+						std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,programNo,i?128:0,zones);
 						break;
 					}
 					//Check next
@@ -390,7 +389,7 @@ int main(int argc, char ** argv) {
 						//Add instrument
 						char strBuf[0x100];
 						snprintf(strBuf,0x100,"keymap%04X",keymapID);
-						std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,prgId,i?128:0,zones);
+						std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,programNo,i?128:0,zones);
 						break;
 					}
 					//Check next
@@ -409,11 +408,8 @@ int main(int argc, char ** argv) {
 				//Add instrument
 				char strBuf[0x100];
 				snprintf(strBuf,0x100,"macro%04X",objectID);
-				std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,prgId,i?128:0,std::vector<SFPresetZone>{zone});
-				break;
+				std::shared_ptr<SFPreset> preset = sf2.NewPreset(strBuf,programNo,i?128:0,std::vector<SFPresetZone>{zone});
 			}
-			
-			prgId++;
 		}
 	}
 	
