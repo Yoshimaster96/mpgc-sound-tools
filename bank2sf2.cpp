@@ -56,12 +56,12 @@ int32_t pc_to_cb(int32_t pc) {
 	return cb;
 }
 //Percent to centibel units (volume)
-int32_t pc8_to_cb(int32_t pc) {
+/*int32_t pc8_to_cb(int32_t pc) {
 	int32_t cb = (1440*(0x7F-pc))/0x7F;
 	if(cb<0) return 0;
 	if(cb>1440) return 1440;
 	return cb;
-}
+}*/
 //Pan range convert (0-127)->(-500,500)
 int32_t pan_range(uint32_t pan) {
 	//Clamp center to 0
@@ -338,7 +338,7 @@ int main(int argc, char ** argv) {
 								std::vector<SFGeneratorItem>{
 									SFGeneratorItem(SFGenerator::kKeyRange,RangesType(keyLo,keyHi)),
 									SFGeneratorItem(SFGenerator::kCoarseTune,transpose),
-									SFGeneratorItem(SFGenerator::kInitialAttenuation,pc8_to_cb(volume)),
+									//SFGeneratorItem(SFGenerator::kInitialAttenuation,pc8_to_cb(volume)),
 									SFGeneratorItem(SFGenerator::kPan,pan_range(pan))},
 								std::vector<SFModulatorItem>{});
 							zones.push_back(thiszone);
