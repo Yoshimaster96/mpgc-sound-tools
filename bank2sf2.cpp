@@ -172,7 +172,7 @@ void macro_to_instrument(uint16_t id) {
 				sampleLoopModes[sampleID] = (uint16_t)SampleMode::kNoLoop;
 				while(waveSize>0) {
 					uint32_t fourcc = read_u32_be(fpWave);
-					int32_t chkSize = read_u32_le(fpWave)+8;
+					int32_t chkSize = read_u32_le(fpWave);
 					//"fmt "
 					if(fourcc==0x666D7420) {
 						uint16_t wFormatTag = read_u16_le(fpWave);
@@ -204,7 +204,7 @@ void macro_to_instrument(uint16_t id) {
 							uint32_t dwFraction = read_u32_le(fpWave);
 							uint32_t dwPlayCount = read_u32_le(fpWave);
 							loopStart = dwStart;
-							loopEnd = dwEnd;
+							loopEnd = dwEnd+1;
 							sampleLoopModes[sampleID] = (uint16_t)SampleMode::kLoopContinuously;
 						}
 						fseek(fpWave,cbSamplerData,SEEK_CUR);
@@ -218,9 +218,9 @@ void macro_to_instrument(uint16_t id) {
 					}
 					//anything else
 					else {
-						fseek(fpWave,chkSize-8,SEEK_CUR);
+						fseek(fpWave,chkSize,SEEK_CUR);
 					}
-					waveSize -= chkSize;
+					waveSize -= (chkSize+8);
 				}
 				fclose(fpWave);
 				//Add sample
