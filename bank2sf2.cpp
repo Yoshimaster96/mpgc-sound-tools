@@ -90,10 +90,10 @@ void macro_to_instrument(uint16_t id) {
 			uint16_t sampleID = 0;
 			int8_t tuneCoarse = 0;
 			int8_t tuneFine = 0;
-			int32_t attack = 0;
-			int32_t decay = 0;
+			int32_t attack = -12000;
+			int32_t decay = -12000;
 			int32_t sustain = 0;
-			int32_t release = 0;
+			int32_t release = -12000;
 			//int32_t modVelAtk = 0;
 			//int32_t modKeyDec = 0;
 			//Process macro commands
