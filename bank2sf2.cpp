@@ -48,20 +48,20 @@ int32_t tc_to_tc(int32_t tc) {
 	double secs = exp2(tcd/(1200.0*65536.0));
 	return ms_to_tc((int32_t)round(1000.0*secs));
 }
-//Percent to centibel units (initial attenuation/sustain level)
+//Percent to centibel units (sustain level)
 int32_t pc_to_cb(int32_t pc) {
-	int32_t cb = (1440*(0x1000-pc))/0x1000;
-	if(cb<0) return 0;
-	if(cb>1440) return 1440;
+	if(pc==0) return 1440;
+	double pcd = (double)pc;
+	int32_t cb = (int32_t)round(-100.0*log10(pcd/4096.0));
 	return cb;
 }
 //Percent to centibel units (volume)
-/*int32_t pc8_to_cb(int32_t pc) {
-	int32_t cb = (1440*(0x7F-pc))/0x7F;
-	if(cb<0) return 0;
-	if(cb>1440) return 1440;
+int32_t pc8_to_cb(int32_t pc) {
+	if(pc==0) return 1440;
+	double pcd = (double)pc;
+	int32_t cb = (int32_t)round(-100.0*log10(pcd/127.0));
 	return cb;
-}*/
+}
 //Pan range convert (0-127)->(-500,500)
 int32_t pan_range(uint32_t pan) {
 	//Clamp center to 0
@@ -337,7 +337,7 @@ int main(int argc, char ** argv) {
 								std::vector<SFGeneratorItem>{
 									SFGeneratorItem(SFGenerator::kKeyRange,RangesType(keyLo,keyHi)),
 									SFGeneratorItem(SFGenerator::kCoarseTune,transpose),
-									//SFGeneratorItem(SFGenerator::kInitialAttenuation,pc8_to_cb(volume)),
+									SFGeneratorItem(SFGenerator::kInitialAttenuation,pc8_to_cb(volume)),
 									SFGeneratorItem(SFGenerator::kPan,pan_range(pan))},
 								std::vector<SFModulatorItem>{});
 							zones.push_back(thiszone);
